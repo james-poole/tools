@@ -5,62 +5,64 @@ VOLUMES=$(docker volume ls -q)
 NETWORKS=$(docker network ls | awk '{ if ($2!="bridge") print}' | awk '{ if ($2!="none") print}' | awk '{ if ($2!="host") print $1}' | sed 's/NETWORK//')
 
 if [ -z "$PS" ]; then
-   echo "No Docker Processes left behind."
+   echo -e "\e[32mNo Processes left behind.\e[0m"
 else
-   echo "Targets acquired. Kill and delete?"
+   echo -e "\e[31mProcesses found. Kill and delete?"
    read -r -p "[y/N]" response
    response=${response,,}
    if [[ $response =~ ^(yes|y)$ ]]; then   
-        echo "Killing and removing processes. Ctrl+C to abort."
+        echo -e "Killing and removing processes. Ctrl+C to abort.\e[0m"
         sleep 5
-        docker kill $PS
-        docker rm $PS
+        docker kill $PS &>/dev/null
+        docker rm $PS &>/dev/null
    else
-        echo "Ok moving on."
+        echo -e "Ok moving on."
    fi
 fi
 
 if [ -z "$IMAGES" ]; then
-   echo "No Images to delete."
+   echo -e "\e[32mNo Images to delete.\e[0m"
 else
-   echo "Targets acquired. Kill and delete?"
+   echo -e "\e[31mImages found. Delete all?"
    read -r -p "[y/N]" response
    response=${response,,}  
    if [[ $response =~ ^(yes|y)$ ]]; then
-        echo "Deleting all local images. Ctrl+C to abort."
+        echo -e "Deleting all local docker images. Ctrl+C to abort.\e[0m"
         sleep 5
-        docker rmi $IMAGES
+        docker rmi $IMAGES &>/dev/null
    else
-        echo "Ok moving on."
+        echo -e "Ok moving on."
    fi
 fi
 
 if [ -z "$VOLUMES" ]; then
-    echo "No Docker volumes to delete."
+    echo -e "\e[32mNo Volumes to delete.\e[0m"
 else
-    echo "Targets acquired. Kill and delete?"
+    echo -e "\e[31mVolumes found. Delete?"
     read -r -p "[y/N]" response
     response=${response,,}    
     if [[ $response =~ ^(yes|y)$ ]]; then
-        echo "Deleting all local docker volumes. Ctrl+C to abort."
+        echo -e "Deleting all local docker volumes. Ctrl+C to abort.\e[0m"
         sleep 5
-        docker volume rm $VOLUMES
+        docker volume rm $VOLUMES &>/dev/null
     else
-        echo "Ok moving on."
+        echo -e "Ok moving on."
     fi
 fi
 
 if [ -z "$NETWORKS" ]; then
-    echo "No Networks to delete."
+    echo -e "\e[32mNo Networks to delete.\e[0m"
 else
-    echo "Targets acquired. Kill and delete?"
+    echo -e "\e[31mNetworks found. Delete all?"
     read -r -p "[y/N]" response
     response=${response,,}
     if [[ $response =~ ^(yes|y)$ ]]; then
-        echo "Deleting all local docker networks. Ctrl+C to abort."
+        echo -e "Deleting all local docker networks. Ctrl+C to abort.\e[0m"
         sleep 5
-        docker network rm $NETWORKS
+        docker network rm $NETWORKS &>/dev/null
+        echo -e "All done."
     else
-        echo "Ok moving on."
+        echo -e "All done."
     fi
 fi
+echo -e "All done."
