@@ -32,7 +32,7 @@ else
         echo -e "Deleting all local docker images in 5 seconds. Ctrl+C to abort.\e[0m"
         sleep 5
         echo -e "Deleting images..."
-        docker rmi $IMAGES &>/dev/null
+        docker rmi -f $IMAGES &>/dev/null
         echo -e "Done"
    else
         echo -e "Ok moving on."
