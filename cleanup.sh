@@ -11,10 +11,12 @@ else
    read -r -p "[y/N]" response
    response=${response,,}
    if [[ $response =~ ^(yes|y)$ ]]; then   
-        echo -e "Killing and removing processes. Ctrl+C to abort.\e[0m"
+        echo -e "Killing and removing processes in 5 seconds. Ctrl+C to abort.\e[0m"
         sleep 5
+        echo -e "Deleting processes..."
         docker kill $PS &>/dev/null
         docker rm $PS &>/dev/null
+        echo -e "Done"
    else
         echo -e "Ok moving on."
    fi
@@ -27,9 +29,11 @@ else
    read -r -p "[y/N]" response
    response=${response,,}  
    if [[ $response =~ ^(yes|y)$ ]]; then
-        echo -e "Deleting all local docker images. Ctrl+C to abort.\e[0m"
+        echo -e "Deleting all local docker images in 5 seconds. Ctrl+C to abort.\e[0m"
         sleep 5
+        echo -e "Deleting images..."
         docker rmi $IMAGES &>/dev/null
+        echo -e "Done"
    else
         echo -e "Ok moving on."
    fi
@@ -42,9 +46,11 @@ else
     read -r -p "[y/N]" response
     response=${response,,}    
     if [[ $response =~ ^(yes|y)$ ]]; then
-        echo -e "Deleting all local docker volumes. Ctrl+C to abort.\e[0m"
+        echo -e "Deleting all local docker volumes in 5 seconds. Ctrl+C to abort.\e[0m"
         sleep 5
+        echo -e "Deleting volumes..."
         docker volume rm $VOLUMES &>/dev/null
+        echo -e "Done"
     else
         echo -e "Ok moving on."
     fi
@@ -57,12 +63,11 @@ else
     read -r -p "[y/N]" response
     response=${response,,}
     if [[ $response =~ ^(yes|y)$ ]]; then
-        echo -e "Deleting all local docker networks. Ctrl+C to abort.\e[0m"
+        echo -e "Deleting all local docker networks in 5 seconds. Ctrl+C to abort.\e[0m"
         sleep 5
+        echo -e "Deleting networks..."
         docker network rm $NETWORKS &>/dev/null
-        echo -e "All done."
-    else
-        echo -e "All done."
+        echo -e "Done."
     fi
 fi
 echo -e "All done."
